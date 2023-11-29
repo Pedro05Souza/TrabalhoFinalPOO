@@ -137,8 +137,13 @@ public class Jogo extends JFrame implements KeyListener {
                     ElementoMapa elemento = mapa.getElemento(j, i);
                     if (elemento != null) {
                         //System.out.println("Elemento: " + elemento.getSimbolo() + " " + elemento.getCor());
+                        if(elemento instanceof Arrow || elemento instanceof Portal){
+                            g.setColor(elemento.getCor());
+                            g.drawString(elemento.getSimbolo().toString(), posX, posY);
+                        } else {
                         g.setColor(elemento.getCor());
                         g.drawString(elemento.getSimbolo().toString(), posX, posY);
+                        }
                     }
                 } else {
                     // Pinta a área não revelada

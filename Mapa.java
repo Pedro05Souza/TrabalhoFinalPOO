@@ -16,7 +16,10 @@ public class Mapa {
     private boolean[][] areaRevelada; // Rastreia quais partes do mapa foram reveladas
     private final Color brickColor = new Color(153, 76, 0); // Cor marrom para tijolos
     private final Color vegetationColor = new Color(34, 139, 34); // Cor verde para vegetação
+    private final Color arrowColor = new Color(255, 0, 0); // Cor vermelha para flechas
+    private final Color portalColor = new Color(0, 0, 255); // Cor azul para portal
     private final int RAIO_VISAO = 5; // Raio de visão do personagem
+    private final int RAIO_INTERACAO = 2; // Raio de interação do personagem
 
     public Mapa(String arquivoMapa) {
         mapa = new ArrayList<>();
@@ -121,8 +124,18 @@ public class Mapa {
     }
 
     public String interage() {
-        //TODO: Implementar
-        return "Interage";
+        for (int i = Math.max(0, y / TAMANHO_CELULA - RAIO_INTERACAO); i < Math.min(mapa.size(), y / TAMANHO_CELULA + RAIO_INTERACAO + 1); i++) {
+            for (int j = Math.max(0, x / TAMANHO_CELULA - RAIO_INTERACAO); j < Math.min(mapa.get(i).length(), x / TAMANHO_CELULA + RAIO_INTERACAO + 1); j++) {
+                if (mapa.get(i).charAt(j) == ' ') {
+                    continue;
+                }
+                ElementoMapa elemento = elementos.get(mapa.get(i).charAt(j));
+                if (elemento != null && elemento.podeInteragir()) {
+                    return elemento.interage();
+                }
+            }
+        }
+       return null;
     }
 
     public String ataca() {
@@ -165,5 +178,9 @@ public class Mapa {
         elementos.put('#', new Parede('▣', brickColor));
         // Vegetação
         elementos.put('V', new Vegetacao('♣', vegetationColor));
+        // Arrow (Speed)
+        elementos.put('A', new Arrow('➶', arrowColor));
+        // Portal
+        elementos.put('T', new Portal('Ж', portalColor));
     }
 }
