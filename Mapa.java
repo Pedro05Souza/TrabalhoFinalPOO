@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 public class Mapa {
     private List<String> mapa;
@@ -20,6 +21,7 @@ public class Mapa {
     private final Color portalColor = new Color(0, 0, 255); // Cor azul para portal
     private final int RAIO_VISAO = 5; // Raio de visão do personagem
     private final int RAIO_INTERACAO = 2; // Raio de interação do personagem
+    private List<ElementoMapa> elementosMapa = new ArrayList<>();
 
     public Mapa(String arquivoMapa) {
         mapa = new ArrayList<>();
@@ -131,10 +133,18 @@ public class Mapa {
                 }
                 ElementoMapa elemento = elementos.get(mapa.get(i).charAt(j));
                 if (elemento != null && elemento.podeInteragir()) {
-                    return elemento.interage();
+                    elementosMapa.add(elemento);
                 }
             }
         }
+        if(elementosMapa.size() > 0){
+            Random random = new Random();
+            int index = random.nextInt(elementosMapa.size());
+            return elementosMapa.get(index).interage();
+          
+        }
+
+        
        return null;
     }
 
